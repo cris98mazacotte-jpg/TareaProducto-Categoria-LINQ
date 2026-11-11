@@ -1,6 +1,7 @@
 ﻿
 using ApiProductosLINQ.Models;
 using ApiProductosLINQ.Repositories;
+using ApiProductosLINQ.DTOs;
 
 namespace ApiProductosLINQ.Services
 {
@@ -13,7 +14,8 @@ namespace ApiProductosLINQ.Services
             _repository = repository;
         }
 
-        public async Task<List<Producto>?> ObtenerPorCategoriaAsync(int categoriaId)
+
+        public async Task<List<ProductoDto>?> ObtenerPorCategoriaAsync(int categoriaId)
         {
             bool existeCategoria = await _repository.ExisteCategoriaAsync(categoriaId);
 
@@ -22,7 +24,18 @@ namespace ApiProductosLINQ.Services
                 return null;
             }
 
-            return await _repository.ObtenerPorCategoriaAsync(categoriaId);
+            var productos = await _repository.ObtenerPorCategoriaAsync(categoriaId);
+
+            return productos.Select(p => new ProductoDto
+            {
+                Id = p.Id,
+                Nombre = p.Nombre,
+                Precio = p.Precio,
+                Stock = p.Stock,
+                CategoriaId = p.CategoriaId,
+                CategoriaDescripcion = p.Categoria?.Descripcion
+            }).ToList();
         }
+
     }
 }

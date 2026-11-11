@@ -1,10 +1,10 @@
 ﻿
-using ApiProductosLINQ.Models;
+using ApiProductosLINQ.DTOs;
 
 namespace ApiProductosLINQ.Services
 {
     public interface IProductoService
     {
-        Task<List<Producto>?> ObtenerPorCategoriaAsync(int categoriaId);
+        Task<List<ProductoDto>?> ObtenerPorCategoriaAsync(int categoriaId);
     }
 }
